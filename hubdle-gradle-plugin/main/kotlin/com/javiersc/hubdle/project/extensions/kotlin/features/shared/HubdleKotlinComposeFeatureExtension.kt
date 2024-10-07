@@ -2,6 +2,7 @@ package com.javiersc.hubdle.project.extensions.kotlin.features.shared
 
 import com.javiersc.hubdle.project.extensions.HubdleDslMarker
 import com.javiersc.hubdle.project.extensions._internal.ApplicablePlugin.Scope
+import com.javiersc.hubdle.project.extensions._internal.COMMON_MAIN
 import com.javiersc.hubdle.project.extensions._internal.MAIN
 import com.javiersc.hubdle.project.extensions._internal.fallbackAction
 import com.javiersc.hubdle.project.extensions._internal.getHubdleExtension
@@ -16,8 +17,11 @@ import com.javiersc.hubdle.project.extensions.dependencies._internal.aliases.and
 import com.javiersc.hubdle.project.extensions.kotlin._internal.forKotlinSetsDependencies
 import com.javiersc.hubdle.project.extensions.kotlin.android.features.hubdleAndroidBuildFeatures
 import com.javiersc.hubdle.project.extensions.kotlin.android.features.hubdleAndroidFeatures
+import com.javiersc.hubdle.project.extensions.kotlin.features.shared.compose.HubdleKotlinComposeDesktopFeatureExtension
 import com.javiersc.hubdle.project.extensions.kotlin.hubdleKotlinAny
+import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.hubdleKotlinMultiplatform
 import com.javiersc.hubdle.project.extensions.shared.PluginId
+import compose
 import javax.inject.Inject
 import org.gradle.api.Action
 import org.gradle.api.Project
@@ -53,6 +57,14 @@ public open class HubdleKotlinComposeFeatureExtension @Inject constructor(projec
     @HubdleDslMarker
     public fun compose(action: Action<ComposeExtension> = Action {}): Unit = fallbackAction(action)
 
+    public val desktop: HubdleKotlinComposeDesktopFeatureExtension
+        get() = getHubdleExtension()
+
+    @HubdleDslMarker
+    public fun desktop(action: Action<HubdleKotlinComposeDesktopFeatureExtension> = Action {}) {
+        desktop.enableAndExecute(action)
+    }
+
     override fun Project.defaultConfiguration() {
         applicablePlugin(scope = Scope.CurrentProject, pluginId = PluginId.JetbrainsCompose)
         applicablePlugin(
@@ -61,6 +73,12 @@ public open class HubdleKotlinComposeFeatureExtension @Inject constructor(projec
         )
 
         lazyConfigurable {
+            if (hubdleKotlinMultiplatform.isFullEnabled.get()) {
+                forKotlinSetsDependencies(COMMON_MAIN) {
+                    implementation(compose.runtime)
+                    implementation(compose.foundation)
+                }
+            }
             if (hubdleAndroidFeatures.isFullEnabled.get()) {
                 forKotlinSetsDependencies(MAIN) {
                     implementation(library(androidx_activity_compose))
