@@ -32,6 +32,7 @@ import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.Hubdl
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformAndroidNativeExtension
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformAppleExtension
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformCommonExtension
+import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformDesktopExtension
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformIOSExtension
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformJsExtension
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformJvmAndAndroidExtension
@@ -148,6 +149,7 @@ private fun HubdleState.createKotlinMultiplatformAndroidExtensions() {
         createExtension<HubdleKotlinMultiplatformJsExtension>()
         createExtension<HubdleKotlinMultiplatformJvmAndAndroidExtension>()
         createExtension<HubdleKotlinMultiplatformJvmExtension>()
+        createExtension<HubdleKotlinMultiplatformDesktopExtension>()
         createExtension<HubdleKotlinMultiplatformLinuxExtension> {
             createExtension<KotlinMultiplatformLinuxArm64Extension>()
             createExtension<KotlinMultiplatformLinuxX64Extension>()

@@ -19,6 +19,7 @@ import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.Hubdl
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformAndroidNativeExtension
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformAppleExtension
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformCommonExtension
+import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformDesktopExtension
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformJsExtension
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformJvmAndAndroidExtension
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformJvmExtension
@@ -92,6 +93,14 @@ public open class HubdleKotlinMultiplatformExtension @Inject constructor(project
     @HubdleDslMarker
     public fun jvm(action: Action<HubdleKotlinMultiplatformJvmExtension> = Action {}) {
         jvm.enableAndExecute(action)
+    }
+
+    public val desktop: HubdleKotlinMultiplatformDesktopExtension
+        get() = getHubdleExtension()
+
+    @HubdleDslMarker
+    public fun desktop(action: Action<HubdleKotlinMultiplatformDesktopExtension> = Action {}) {
+        desktop.enableAndExecute(action)
     }
 
     public val jvmAndAndroid: HubdleKotlinMultiplatformJvmAndAndroidExtension
