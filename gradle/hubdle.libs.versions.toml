@@ -215,6 +215,7 @@ jetbrains-kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", versio
 jetbrains-kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "jetbrains-kotlinx-collections-immutable" }
 jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "jetbrains-kotlinx-coroutines" } # {{ version.ref = "jetbrains-kotlinx-coroutines" }}
 jetbrains-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "jetbrains-kotlinx-coroutines" } # {{ version.ref = "jetbrains-kotlinx-coroutines" }}
+jetbrains-kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "jetbrains-kotlinx-coroutines" } # {{ version.ref = "jetbrains-kotlinx-coroutines" }}
 jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "jetbrains-kotlinx-coroutines" } # {{ version.ref = "jetbrains-kotlinx-coroutines" }}
 jetbrains-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "jetbrains-kotlinx-datetime" }
 jetbrains-kotlinx-io-core = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "jetbrains-kotlinx-io-core" }
