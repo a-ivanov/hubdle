@@ -2,6 +2,8 @@ package com.javiersc.hubdle.project.extensions.kotlin.features.shared
 
 import com.javiersc.hubdle.project.extensions.HubdleDslMarker
 import com.javiersc.hubdle.project.extensions._internal.ApplicablePlugin.Scope
+import com.javiersc.hubdle.project.extensions._internal.COMMON_MAIN
+import com.javiersc.hubdle.project.extensions._internal.DESKTOP_MAIN
 import com.javiersc.hubdle.project.extensions._internal.MAIN
 import com.javiersc.hubdle.project.extensions._internal.fallbackAction
 import com.javiersc.hubdle.project.extensions._internal.getHubdleExtension
@@ -13,11 +15,15 @@ import com.javiersc.hubdle.project.extensions.apis.HubdleEnableableExtension
 import com.javiersc.hubdle.project.extensions.apis.enableAndExecute
 import com.javiersc.hubdle.project.extensions.dependencies._internal.aliases.androidx_activity_compose
 import com.javiersc.hubdle.project.extensions.dependencies._internal.aliases.androidx_compose_compiler
+import com.javiersc.hubdle.project.extensions.dependencies._internal.aliases.jetbrains_kotlinx_coroutines_swing
 import com.javiersc.hubdle.project.extensions.kotlin._internal.forKotlinSetsDependencies
 import com.javiersc.hubdle.project.extensions.kotlin.android.features.hubdleAndroidBuildFeatures
 import com.javiersc.hubdle.project.extensions.kotlin.android.features.hubdleAndroidFeatures
 import com.javiersc.hubdle.project.extensions.kotlin.hubdleKotlinAny
+import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.hubdleKotlinMultiplatform
+import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.hubdleKotlinMultiplatformDesktop
 import com.javiersc.hubdle.project.extensions.shared.PluginId
+import compose
 import javax.inject.Inject
 import org.gradle.api.Action
 import org.gradle.api.Project
@@ -61,12 +67,24 @@ public open class HubdleKotlinComposeFeatureExtension @Inject constructor(projec
         )
 
         lazyConfigurable {
+            if (hubdleKotlinMultiplatform.isFullEnabled.get()) {
+                forKotlinSetsDependencies(COMMON_MAIN) {
+                    implementation(compose.runtime)
+                    implementation(compose.foundation)
+                }
+            }
             if (hubdleAndroidFeatures.isFullEnabled.get()) {
                 forKotlinSetsDependencies(MAIN) {
                     implementation(library(androidx_activity_compose))
                 }
                 hubdleAndroidBuildFeatures.compose.set(true)
                 configureAndroidCommonExtension { defaultConfig { buildFeatures.compose = true } }
+            }
+            if (hubdleKotlinMultiplatformDesktop.isFullEnabled.get()) {
+                forKotlinSetsDependencies(DESKTOP_MAIN) {
+                    implementation(compose.desktop.currentOs)
+                    implementation(library(jetbrains_kotlinx_coroutines_swing))
+                }
             }
         }
     }
