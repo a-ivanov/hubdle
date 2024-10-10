@@ -3,7 +3,6 @@ package com.javiersc.hubdle.project.extensions.kotlin.features.shared
 import com.javiersc.hubdle.project.extensions.HubdleDslMarker
 import com.javiersc.hubdle.project.extensions._internal.ApplicablePlugin.Scope
 import com.javiersc.hubdle.project.extensions._internal.COMMON_MAIN
-import com.javiersc.hubdle.project.extensions._internal.DESKTOP_MAIN
 import com.javiersc.hubdle.project.extensions._internal.MAIN
 import com.javiersc.hubdle.project.extensions._internal.fallbackAction
 import com.javiersc.hubdle.project.extensions._internal.getHubdleExtension
@@ -15,13 +14,12 @@ import com.javiersc.hubdle.project.extensions.apis.HubdleEnableableExtension
 import com.javiersc.hubdle.project.extensions.apis.enableAndExecute
 import com.javiersc.hubdle.project.extensions.dependencies._internal.aliases.androidx_activity_compose
 import com.javiersc.hubdle.project.extensions.dependencies._internal.aliases.androidx_compose_compiler
-import com.javiersc.hubdle.project.extensions.dependencies._internal.aliases.jetbrains_kotlinx_coroutines_swing
 import com.javiersc.hubdle.project.extensions.kotlin._internal.forKotlinSetsDependencies
 import com.javiersc.hubdle.project.extensions.kotlin.android.features.hubdleAndroidBuildFeatures
 import com.javiersc.hubdle.project.extensions.kotlin.android.features.hubdleAndroidFeatures
+import com.javiersc.hubdle.project.extensions.kotlin.features.shared.compose.HubdleKotlinComposeDesktopFeatureExtension
 import com.javiersc.hubdle.project.extensions.kotlin.hubdleKotlinAny
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.hubdleKotlinMultiplatform
-import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.hubdleKotlinMultiplatformDesktop
 import com.javiersc.hubdle.project.extensions.shared.PluginId
 import compose
 import javax.inject.Inject
@@ -59,6 +57,14 @@ public open class HubdleKotlinComposeFeatureExtension @Inject constructor(projec
     @HubdleDslMarker
     public fun compose(action: Action<ComposeExtension> = Action {}): Unit = fallbackAction(action)
 
+    public val desktop: HubdleKotlinComposeDesktopFeatureExtension
+        get() = getHubdleExtension()
+
+    @HubdleDslMarker
+    public fun desktop(action: Action<HubdleKotlinComposeDesktopFeatureExtension> = Action {}) {
+        desktop.enableAndExecute(action)
+    }
+
     override fun Project.defaultConfiguration() {
         applicablePlugin(scope = Scope.CurrentProject, pluginId = PluginId.JetbrainsCompose)
         applicablePlugin(
@@ -79,12 +85,6 @@ public open class HubdleKotlinComposeFeatureExtension @Inject constructor(projec
                 }
                 hubdleAndroidBuildFeatures.compose.set(true)
                 configureAndroidCommonExtension { defaultConfig { buildFeatures.compose = true } }
-            }
-            if (hubdleKotlinMultiplatformDesktop.isFullEnabled.get()) {
-                forKotlinSetsDependencies(DESKTOP_MAIN) {
-                    implementation(compose.desktop.currentOs)
-                    implementation(library(jetbrains_kotlinx_coroutines_swing))
-                }
             }
         }
     }

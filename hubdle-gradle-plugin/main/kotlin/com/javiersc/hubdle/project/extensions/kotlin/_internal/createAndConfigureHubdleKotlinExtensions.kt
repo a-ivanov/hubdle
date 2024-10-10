@@ -22,6 +22,8 @@ import com.javiersc.hubdle.project.extensions.kotlin.features.shared.HubdleKotli
 import com.javiersc.hubdle.project.extensions.kotlin.features.shared.HubdleKotlinMoleculeFeatureExtension
 import com.javiersc.hubdle.project.extensions.kotlin.features.shared.HubdleKotlinSerializationFeatureExtension
 import com.javiersc.hubdle.project.extensions.kotlin.features.shared.HubdleKotlinSqlDelightFeatureExtension
+import com.javiersc.hubdle.project.extensions.kotlin.features.shared.compose.HubdleKotlinComposeDesktopApplicationFeatureExtension
+import com.javiersc.hubdle.project.extensions.kotlin.features.shared.compose.HubdleKotlinComposeDesktopFeatureExtension
 import com.javiersc.hubdle.project.extensions.kotlin.jvm.HubdleKotlinJvmExtension
 import com.javiersc.hubdle.project.extensions.kotlin.jvm.features.HubdleKotlinCompilerPluginFeatureExtension
 import com.javiersc.hubdle.project.extensions.kotlin.jvm.features.HubdleKotlinJvmFeaturesExtension
@@ -80,7 +82,10 @@ private fun HubdleState.createKotlinFeatureExtensions() {
         createExtension<HubdleKotlinCompilerPluginFeatureExtension>()
         createExtension<HubdleKotlinAtomicfuFeatureExtension>()
         createExtension<HubdleKotlinBuildKonfigFeatureExtension>()
-        createExtension<HubdleKotlinComposeFeatureExtension>()
+        createExtension<HubdleKotlinComposeFeatureExtension> {
+            createExtension<HubdleKotlinComposeDesktopFeatureExtension>()
+            createExtension<HubdleKotlinComposeDesktopApplicationFeatureExtension>()
+        }
         createExtension<HubdleKotlinContextReceiversFeatureExtension>()
         createExtension<HubdleKotlinCoroutinesFeatureExtension>()
         createExtension<HubdleKotlinExtendedStdlibFeatureExtension>()
