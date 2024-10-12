@@ -86,6 +86,10 @@ constructor(project: Project) : HubdleConfigurableExtension(project) {
         public const val proguardVersion: String = "7.4.0"
     }
 
+    internal companion object {
+        private const val MINIMUM_ALLOWED_DMG_VERSION: String = "1.0.0"
+    }
+
     override fun Project.defaultConfiguration() {
         lazyConfigurable {
             configureComposeExtension {
@@ -120,7 +124,7 @@ constructor(project: Project) : HubdleConfigurableExtension(project) {
     }
 
     private fun adaptReleaseVersionForDmg(version: String): String {
-        if (version.first() == '0') return version.replaceFirst('0', '1')
+        if (version.first() == '0') return MINIMUM_ALLOWED_DMG_VERSION
         return version
     }
 }
