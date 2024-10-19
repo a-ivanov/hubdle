@@ -3,6 +3,7 @@ package com.javiersc.hubdle.project.extensions.kotlin.shared
 import com.javiersc.hubdle.project.extensions._internal.MAIN
 import com.javiersc.hubdle.project.extensions._internal.TEST
 import com.javiersc.hubdle.project.extensions.apis.HubdleMinimalSourceSetConfigurableExtension
+import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
@@ -22,4 +23,11 @@ public abstract class HubdleKotlinMinimalSourceSetConfigurableExtension(project:
             the<KotlinProjectExtension>().sourceSets.maybeCreate(calculateName(TEST))
             return the<KotlinProjectExtension>().sourceSets.named(calculateName(TEST))
         }
+}
+
+internal fun HubdleKotlinMinimalSourceSetConfigurableExtension.enableAndExecuteOnMain(
+    action: Action<KotlinSourceSet>
+) {
+    enabled(true)
+    main(action)
 }
