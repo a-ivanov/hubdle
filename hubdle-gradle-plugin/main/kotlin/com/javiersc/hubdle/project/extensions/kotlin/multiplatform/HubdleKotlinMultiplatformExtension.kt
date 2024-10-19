@@ -9,11 +9,7 @@ import com.javiersc.hubdle.project.extensions.apis.HubdleConfigurableExtension
 import com.javiersc.hubdle.project.extensions.apis.HubdleEnableableExtension
 import com.javiersc.hubdle.project.extensions.apis.enableAndExecute
 import com.javiersc.hubdle.project.extensions.config.publishing.maven.configurableMavenPublishing
-import com.javiersc.hubdle.project.extensions.kotlin._internal.configurableSrcDirs
 import com.javiersc.hubdle.project.extensions.kotlin.hubdleKotlin
-import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.HubdleKotlinMultiplatformTarget.Common
-import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.HubdleKotlinMultiplatformTarget.JS
-import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.HubdleKotlinMultiplatformTarget.WAsm
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.features.HubdleKotlinMultiplatformFeaturesExtension
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformAndroidExtension
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformAndroidNativeExtension
@@ -27,14 +23,14 @@ import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.Hubdl
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformMinGWExtension
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformNativeExtension
 import com.javiersc.hubdle.project.extensions.kotlin.multiplatform.targets.HubdleKotlinMultiplatformWAsmJsExtension
+import com.javiersc.hubdle.project.extensions.kotlin.shared.enableAndExecuteOnMain
 import com.javiersc.hubdle.project.extensions.shared.PluginId
 import javax.inject.Inject
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.SetProperty
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
 @HubdleDslMarker
 public open class HubdleKotlinMultiplatformExtension @Inject constructor(project: Project) :
@@ -53,12 +49,12 @@ public open class HubdleKotlinMultiplatformExtension @Inject constructor(project
         features.enableAndExecute(action)
     }
 
-    public val common: HubdleKotlinMultiplatformCommonExtension
+    private val common: HubdleKotlinMultiplatformCommonExtension
         get() = getHubdleExtension()
 
     @HubdleDslMarker
-    public fun common(action: Action<HubdleKotlinMultiplatformCommonExtension> = Action {}) {
-        common.enableAndExecute(action)
+    public fun commonMain(action: Action<KotlinSourceSet> = Action {}) {
+        common.enableAndExecuteOnMain(action)
     }
 
     public val android: HubdleKotlinMultiplatformAndroidExtension
@@ -168,28 +164,8 @@ public open class HubdleKotlinMultiplatformExtension @Inject constructor(project
             configure<KotlinMultiplatformExtension> { applyDefaultHierarchyTemplate() }
         }
 
-        configurableSrcDirs(multiplatformTargets())
         configurableDependencies()
         configurableMavenPublishing(configEmptyJavaDocs = true)
-    }
-
-    private fun multiplatformTargets(): SetProperty<String> = setProperty {
-        val hubdleTargets: List<String> =
-            buildSet {
-                    add(Common)
-                    addAll(hubdleJvmTargets)
-                    addAll(hubdleAppleTargets)
-                    addAll(nativeTargets)
-                    add(JS)
-                    add(WAsm)
-                }
-                .map { target -> "$target" }
-
-        buildSet {
-            val targets = the<KotlinMultiplatformExtension>().targets.map(KotlinTarget::getName)
-            addAll(targets)
-            addAll(hubdleTargets)
-        }
     }
 }
 
