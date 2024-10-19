@@ -91,12 +91,12 @@ public open class HubdleKotlinMultiplatformExtension @Inject constructor(project
         jvm.enableAndExecute(action)
     }
 
-    public val desktop: HubdleKotlinMultiplatformDesktopExtension
+    private val desktop: HubdleKotlinMultiplatformDesktopExtension
         get() = getHubdleExtension()
 
     @HubdleDslMarker
-    public fun desktop(action: Action<HubdleKotlinMultiplatformDesktopExtension> = Action {}) {
-        desktop.enableAndExecute(action)
+    public fun desktopMain(action: Action<KotlinSourceSet> = Action {}) {
+        desktop.enableAndExecuteOnMain(action)
     }
 
     public val jvmAndAndroid: HubdleKotlinMultiplatformJvmAndAndroidExtension
